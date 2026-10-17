@@ -14,15 +14,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Extract Android project
-        run: |
-          unzip ChessScreenAssistant-Android-Source.zip -d source
-      - name: Set up Java
+        run: unzip ChessScreenAssistant-Android-Source.zip -d source
+      - name: Set up Java 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+      - name: Accept Android SDK licenses
+        run: yes | sdkmanager --licenses || true
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
@@ -35,3 +36,4 @@ jobs:
         with:
           name: ChessScreenAssistant-APK
           path: source/chessscreen-assistant/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
